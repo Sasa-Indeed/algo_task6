@@ -39,6 +39,23 @@ int scale(Coin* rightPan, Coin* leftPan,int numCoins) {
 
 }
 
+Coin* findFakeInGroupOfThree(Coin* groupOfCoins){
+    if (scale(&groupOfCoins[0], &groupOfCoins[1], 1) == 0) {
+        if (scale(&groupOfCoins[1], &groupOfCoins[2], 1) == 0) {
+            return NULL;
+        }
+        else
+            return &groupOfCoins[2];
+    }
+    else {
+        if (scale(&groupOfCoins[0], &groupOfCoins[2], 1) == 0) {
+            return &groupOfCoins[1];
+        }
+        else
+            return &groupOfCoins[0];
+    }
+}
+
 /*return false if all coins are geniune*/
 bool fakeCoin(Coin* coins,  int numCoins,Coin* fake) {
     //for dividing the array of coins into smaller arrays
