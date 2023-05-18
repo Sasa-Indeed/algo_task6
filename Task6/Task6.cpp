@@ -182,25 +182,26 @@ int fakeCoin(Coin* coins, int numCoins, Coin* fake) {
 
 }
 
-int main(){
-    Coin*  a ;
+int main() {
+    Coin* a;
     Coin  b;
     int size;
     int choice;
 
-    std::cout << "Enter Number of Coins: \n";
+    std::cout << "Enter Number of Coins: ";
     std::cin >> size;
 
     a = new Coin[size];
 
-    for (int i = 0; i < size; i++){
+    for (int i = 0; i < size; i++) {
         a[i].id = i;
         a[i].weight = 2;
     }
 
-    std::cout << "Enter Coin Detection Option   : \n";
+    std::cout << "Enter Coin Detection Option: \n";
     std::cout << "1-All Genuine\n";
     std::cout << "2-One Fake\n";
+    std::cout << "Enter Choice: ";
     std::cin >> choice;
 
     srand(time(0));
@@ -210,15 +211,18 @@ int main(){
 
 
     if (choice == 1) {
-        fakeCoin(a, 4, &b);
-    }else{
+        fakeCoin(a, size, &b);
+    }
+    else {
         (randweight == 0) ? a[randIndex].weight -= 0.1 : a[randIndex].weight += 0.1;
     }
 
 
+    if (fakeCoin(a, size, &b) == 0) {
+        std::cout << "Impossible to determine";
+    }
+    else {
 
-
-    fakeCoin(a, 4, &b);
     std::string temp = "";
     switch (b.gen) {
     case Genuine:
@@ -231,6 +235,22 @@ int main(){
         temp = "a heavier counterfeit";
 
     }
-    std::cout << "coin: " << b.id << " is " << temp << '\n';
+    
+    if (b.gen == Genuine) {
+        std::cout << "All Coins are genuine:\n ";
+        std::cout << "DISPLAYING VIRTIUAL WEIGHT FOR VERIFICATION ONLY!!!!!\n";
+        for (size_t i = 0; i < size; i++){
+            std::cout << "Coin " << a[i].id << " Virtual weight = " << a[i].weight << '\n';
+        }
+    }else {
+        std::cout << "Coin: " << b.id << " is " << temp << '\n';
+        std::cout << "DISPLAYING VIRTIUAL WEIGHT FOR VERIFICATION ONLY!!!!!\n";
+        
+        for (size_t i = 0; i < size; i++) {
+            std::cout << "Coin " << a[i].id << " Virtual weight = " << a[i].weight << '\n';
+        }
+    }
+}
+    delete [] a;
 }
 
