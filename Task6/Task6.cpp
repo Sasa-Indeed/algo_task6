@@ -8,6 +8,7 @@ enum genuinity  { Genuine, CounterfeitLight, CounterfeitHeavy};
 
 
 typedef struct {
+    int id;
     double weight;
     genuinity gen;
 }Coin;
@@ -92,7 +93,20 @@ Coin* findFakeInGroupOfThree(Coin* groupOfCoins){
 /*return false if all coins are geniune*/
 bool fakeCoin(Coin* coins,  int numCoins,Coin* fake) {
     //for dividing the array of coins into smaller arrays
-    if (numCoins > 3) {
+    if (numCoins == 1 || numCoins == 2) {
+        std::cout << "Impossible to determine whether there is a fake coin or not using a balance scale"<<std::endl;
+    }
+    else if (numCoins == 3) {
+        Coin* fake = findFakeInGroupOfThree(coins);
+        if (fake == NULL) {
+            std::cout << "All coins are genuine" << std::endl;
+        }
+        else {
+            std::cout << "Coin number: " << fake->id << " is fake" << std::endl;
+
+        }
+    }
+    else if (numCoins > 3) {
         int numofGroups = (numCoins % 3 == 0)? numCoins/3 : numCoins/3 + 1;
         int n = 0;
 
@@ -102,6 +116,18 @@ bool fakeCoin(Coin* coins,  int numCoins,Coin* fake) {
             group[i] = new Coin[3];
         }
 
+        for (int i = 0; i < numCoins; i++) {
+            group[i / 3][i % 3] = coins[i];
+        }
+        Coin** result = new Coin*[numofGroups];
+
+        for (int i = 0; i < numofGroups; i++) {
+            if (i == numofGroups - 1) {
+                // implement logic to check if last group has less than 3 elements
+                // and act acordingly
+            }
+            result[i] = findFakeInGroupOfThree(group[i]);
+        }
     }
 }
 
