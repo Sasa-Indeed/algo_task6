@@ -206,19 +206,31 @@ int main(){
     srand(time(0));
 
     int randIndex = rand() % size;
-    int pls = rand() % size;
+    int randweight = rand() % 2;
 
 
     if (choice == 1) {
         fakeCoin(a, 4, &b);
     }else{
-
+        (randweight == 0) ? a[randIndex].weight -= 0.1 : a[randIndex].weight += 0.1;
     }
 
 
 
 
     fakeCoin(a, 4, &b);
+    std::string temp = "";
+    switch (b.gen) {
+    case Genuine:
+        temp = "Genuine";
+        break;
+    case CounterfeitLight:
+        temp = "a lighter counterfeit";
+        break;
+    case CounterfeitHeavy:
+        temp = "a heavier counterfeit";
 
+    }
+    std::cout << "coin: " << b.id << " is " << temp << '\n';
 }
 
