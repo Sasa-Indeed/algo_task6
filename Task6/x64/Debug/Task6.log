@@ -1,4 +1,2 @@
 ﻿  Task6.cpp
-D:\ASU\3-Junior\Spring23\CSE332 Design of Algorithm\Project\Task6\Task6.cpp(74,10): warning C4101: 'a': unreferenced local variable
-D:\ASU\3-Junior\Spring23\CSE332 Design of Algorithm\Project\Task6\Task6.cpp(71): warning C4715: 'fakeCoin': not all control paths return a value
-  Task6.vcxproj -> D:\ASU\3-Junior\Spring23\CSE332 Design of Algorithm\Project\Task6\x64\Debug\Task6.exe
+  Task6.vcxproj -> D:\ASU\3-Junior\Spring23\CSE332 Design of Algorithm\Project\algo_task6\Task6\x64\Debug\Task6.exe

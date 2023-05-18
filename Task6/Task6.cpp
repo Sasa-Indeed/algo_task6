@@ -22,7 +22,7 @@ typedef struct {
 
 1  : left pan is up
 */
-int scale(Coin* rightPan, Coin* leftPan,int numCoins) {
+int scale(Coin* leftPan, Coin* rightPan, int numCoins) {
     double rweight = 0, lweight = 0;
 
     for (int i = 0; i < numCoins; i++){
@@ -90,50 +90,135 @@ Coin* findFakeInGroupOfThree(Coin* groupOfCoins){
     }
 }
 
-/*return false if all coins are geniune*/
-bool fakeCoin(Coin* coins,  int numCoins,Coin* fake) {
-    //for dividing the array of coins into smaller arrays
+
+
+/*
+1: there exits one fake
+
+0 : impossible
+
+-1 : all are genuine
+*/
+int fakeCoin(Coin* coins, int numCoins, Coin* fake) {
+
     if (numCoins == 1 || numCoins == 2) {
-        std::cout << "Impossible to determine whether there is a fake coin or not using a balance scale"<<std::endl;
-    }
-    else if (numCoins == 3) {
-        Coin* fake = findFakeInGroupOfThree(coins);
-        if (fake == NULL) {
-            std::cout << "All coins are genuine" << std::endl;
+        return 0;
+    }else if (numCoins == 3) {
+        Coin* pt = findFakeInGroupOfThree(coins);
+        
+
+        if (pt) {
+            fake->gen = pt->gen;
+            fake->id = pt->id;
+            return 1;
+        }else{
+            fake->gen = Genuine;
+            return -1;
         }
-        else {
-            std::cout << "Coin number: " << fake->id << " is fake" << std::endl;
 
-        }
-    }
-    else if (numCoins > 3) {
-        int numofGroups = (numCoins % 3 == 0)? numCoins/3 : numCoins/3 + 1;
-        int n = 0;
-
-        Coin** group = new Coin* [numofGroups];
-
-        for (int i = 0; i < n; i++) {
+    }else{
+        int numofGroups = (numCoins % 3 == 0) ? numCoins / 3 : numCoins / 3 + 1;
+        
+         Coin** group = new Coin* [numofGroups];
+        
+        for (int i = 0; i < numofGroups; i++) {
             group[i] = new Coin[3];
         }
 
-        for (int i = 0; i < numCoins; i++) {
-            group[i / 3][i % 3] = coins[i];
-        }
-        Coin** result = new Coin*[numofGroups];
-
-        for (int i = 0; i < numofGroups; i++) {
-            if (i == numofGroups - 1) {
-                // implement logic to check if last group has less than 3 elements
-                // and act acordingly
+        int count = numCoins;
+        
+            for (int i = 0,z = 0; i < numofGroups; i++) {
+                for (int j = 0; j < 3; j++,z++) {
+                    if (count == 2) {
+                        group[i][j] = coins[z];
+                        group[i][++j] = coins[++z];
+                        break;
+                    }else if (count == 1){
+                        group[i][j] = coins[z];
+                        break;
+                    }
+                    group[i][j] = coins[z];
+                }
+                
+                if (count >= 3){
+                    count -= 3;
+                }
+                
             }
-            result[i] = findFakeInGroupOfThree(group[i]);
-        }
+            int results = 0;
+
+            int i;
+
+            for ( i = 0; i < numofGroups - 1; i++){
+                results = fakeCoin(group[i], 3, fake);
+                
+                if (results == 1){
+                    return results;
+                }
+
+            }
+            
+            if(count == 2){
+                group[i][2] = group[i - 1][2];
+            }else if (count == 1){
+                group[i][1] = group[i - 1][1];
+                group[i][2] = group[i - 1][2];
+            }
+            
+        
+            results = fakeCoin(group[i], 3, fake);
+
+
+            // To delete arrays
+            for (int i = 0; i < numofGroups; i++) {
+                delete[] group[i];
+            }
+            delete[] group;
+
+            return results;
+
     }
+
+
 }
 
 int main(){
-    int  a [5];
+    Coin*  a ;
+    Coin  b;
+    int size;
+    int choice;
 
-    std::cout << "Hello World!\n";
+    std::cout << "Enter Number of Coins: \n";
+    std::cin >> size;
+
+    a = new Coin[size];
+
+    for (int i = 0; i < size; i++){
+        a[i].id = i;
+        a[i].weight = 2;
+    }
+
+    std::cout << "Enter Coin Detection Option   : \n";
+    std::cout << "1-All Genuine\n";
+    std::cout << "2-One Fake\n";
+    std::cin >> choice;
+
+    srand(time(0));
+
+    int randIndex = rand() % size;
+    int pls = rand() % size;
+
+
+    if (choice == 1) {
+        fakeCoin(a, 4, &b);
+    }else{
+
+    }
+
+
+
+
+    fakeCoin(a, 4, &b);
+
 }
 
